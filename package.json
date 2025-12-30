@@ -1,0 +1,30 @@
+{
+  "name": "lisa-md",
+  "version": "2.0.0",
+  "description": "A Simple WhatsApp bot created By Sadiya",
+  "main": "lisa-md.js",
+  "scripts": {
+    "start": "pm2 start lisa-md.js --deep-monitoring --attach --name lisa-md",
+    "stop": "pm2 stop lisa-md",
+    "restart": "pm2 restart lisa-md"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "latest",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "jimp": "^1.6.0",
+    "express": "^4.18.2",
+    "fs-extra": "^11.2.0",
+    "pino": "^8.17.0",
+    "pm2": "latest",
+    "translate-google-api": "latest",
+    "yt-search": "latest",
+    "child_process": "^1.0.2",
+    "cheerio": "1.1.0",
+    "node-fetch": "3.3.2",
+    "path": "^0.12.7",
+    "fs": "0.0.1-security",
+    "axios": "^1.2.5",
+    "file-type": "^16.5.3",
+    "fluent-ffmpeg": "2.1.3"
+  }
+}
