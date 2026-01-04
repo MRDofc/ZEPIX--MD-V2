@@ -3,50 +3,52 @@ const axios = require("axios");
 module.exports = [
     {
         name: "ai",
-        description: "Zepix AI Chat Command",
+        description: "Zepix AI - Advanced Chat",
         ownerOnly: false,
         async execute(sock, msg, args, context) {
-            const { from, pushname, reply, sadiya_md_footer } = context;
+            const { from, sender, pushname, reply } = context;
             
             try {
                 let text = args.join(" ");
-                if (!text) return reply(`👋 Hello ${pushname}, කරුණාකර ප්‍රශ්නයක් ඇතුළත් කරන්න.`);
+                if (!text) return reply(`👋 Hello @${sender.split('@')[0]}, කරුණාකර මොනවා හරි අහන්න.`, { mentions: [sender] });
 
-                let query = text.toLowerCase();
-                let result = "";
+                // කාලය අනුව සුබපැතුම තීරණය කිරීම
+                const hour = new Date().getHours();
+                let wish = "";
+                if (hour >= 5 && hour < 12) wish = "සුබ උදෑසනක්! 🌅";
+                else if (hour >= 12 && hour < 18) wish = "සුබ දහවලක්! ☀️";
+                else if (hour >= 18 && hour < 22) wish = "සුබ සැන්දෑවක්! 🌆";
+                else wish = "සුබ රාත්‍රියක්! 🌙";
 
-                // ඔයා කියපු විදිහට නම සහ හැදූ කෙනා ගැන පරීක්ෂා කිරීම
-                if (query.includes("නම") || query.includes("ඔයා කවුද") || query.includes("who are you") || query.includes("your name")) {
-                    result = "මම **Zepix AI**. ඔයාට උදව් කරන්න පුළුවන් බුද්ධිමත් සහායකයෙක්.";
-                } 
-                else if (query.includes("කවුද හැදුවේ") || query.includes("creator") || query.includes("made you") || query.includes("owner")) {
-                    result = "මාව නිර්මාණය කළේ **දිනේෂ්** (Dinesh) විසිනි.";
-                } 
-                else {
-                    // වෙනත් ප්‍රශ්න සඳහා API එක භාවිතා කිරීම
-                    const apiKey = "7ad4b6b9-4712-47cf-9500-22c5e0fd9728";
-                    const response = await axios.get(`https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(text)}&apikey=${apiKey}`);
-                    result = response.data.result;
-                }
+                // AI එකට දෙන විශේෂ උපදෙස් (Prompt)
+                const systemInstruction = `You are Zepix AI, a friendly and emotional AI assistant. 
+                Your creator is Dinesh. If someone asks who made you, say 'Dinesh'. 
+                If someone asks your name, say 'Zepix AI'. 
+                Always understand user's emotions and talk like a real human. 
+                Respond in the same language as the user (Sinhala or English).`;
 
-                if (!result) return reply("සමාවන්න, මට පිළිතුරක් සොයාගත නොහැකි විය.");
+                const fullQuery = `${systemInstruction}\n\nUser: ${text}`;
+                
+                const apiKey = "7ad4b6b9-4712-47cf-9500-22c5e0fd9728";
+                const apiUrl = `https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(fullQuery)}&apikey=${apiKey}`;
 
-                // Alive style එකට පිළිතුර සැකසීම
-                let aiResponse = `👋 Hello, ${pushname}
+                const response = await axios.get(apiUrl);
+                let result = response.data.result;
 
-●🧑‍💻 **𝐙𝐄𝐏𝐈𝐗 𝐀𝐈 𝐑𝐄𝐒𝐏𝐎𝐍𝐒𝐄** 🧑‍💻●
+                if (!result) return reply("සමාවන්න, මට මේ වෙලාවේ පිළිතුරක් දෙන්න අමාරුයි.");
 
-${result}
+                // අවසාන මැසේජ් එක සැකසීම
+                let finalMsg = `${wish}\n\n👋 Hello @${sender.split('@')[0]}\n\n${result}`;
 
-*🌞Have A Nice Day🌞*
-
-${sadiya_md_footer}`;
-
-                await reply(aiResponse);
+                // මැසේජ් එක යැවීම (Mention සමඟ)
+                await sock.sendMessage(from, { 
+                    text: finalMsg, 
+                    mentions: [sender] 
+                }, { quoted: msg });
 
             } catch (e) {
                 console.log(e);
-                reply("API සම්බන්ධතාවයේ දෝෂයක් පවතී.");
+                reply("සමාවන්න, සර්වර් එකේ පොඩි දෝෂයක් තියෙනවා.");
             }
         }
     }
