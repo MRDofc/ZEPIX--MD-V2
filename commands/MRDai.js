@@ -1,54 +1,43 @@
-
-const axios = require('axios');
-
-// AI එක On ද Off ද කියලා මතක තබා ගැනීමට (බෝට් Restart උනොත් මෙය Reset වේ)
-let autoAiSettings = {}; 
+const axios = require("axios");
 
 module.exports = [
     {
         name: "ai",
-        description: "Enable or Disable Auto AI Chat",
+        description: "Gemini AI Chat Command",
         ownerOnly: false,
         async execute(sock, msg, args, context) {
-            const { from, reply } = context;
-            const action = args[0] ? args[0].toLowerCase() : "";
-
-            if (action === "on") {
-                autoAiSettings[from] = true;
-                return reply("🤖 Auto AI Chat සක්‍රිය කරන ලදී!");
-            } else if (action === "off") {
-                autoAiSettings[from] = false;
-                return reply("😴 Auto AI Chat අක්‍රිය කරන ලදී!");
-            } else {
-                return reply("පාවිච්චි කරන ක්‍රමය:\n*.ai on* - සක්‍රිය කිරීමට\n*.ai off* - අක්‍රිය කිරීමට");
-            }
-        }
-    },
-    {
-        name: "auto-ai-core",
-        description: "Hidden core for Auto AI",
-        ownerOnly: false,
-        async execute(sock, msg, args, context) {
-            const { from, body, isGroup } = context;
-
-            // මෙම Chat එක සඳහා AI On කර ඇත්දැයි බැලීම
-            if (!autoAiSettings[from]) return;
-
-            // Command එකක් නම් (උදා: . හෝ / වලින් පටන් ගන්නා ඒවා) AI රිප්ලයි නොකිරීමට
-            if (!body || body.startsWith('.') || body.startsWith('/')) return;
-
+            const { from, pushname, reply, sadiya_md_footer } = context;
+            
             try {
+                // පරිශීලකයා ඇසූ ප්‍රශ්නය ලබා ගැනීම
+                let text = args.join(" ");
+                
+                if (!text) return reply(`👋 Hello ${pushname}, කරුණාකර ප්‍රශ්නයක් ඇතුළත් කරන්න.\n\n*උදාහරණ:* .ai ඔයා කවුද?`);
+
+                // API එකට Request එක යැවීම
                 const apiKey = "7ad4b6b9-4712-47cf-9500-22c5e0fd9728";
-                const apiUrl = `https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(body)}&apikey=${apiKey}`;
+                const response = await axios.get(`https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(text)}&apikey=${apiKey}`);
+                
+                const result = response.data.result;
 
-                const response = await axios.get(apiUrl);
-                const aiText = response.data.result;
+                if (!result) return reply("සමාවන්න, මට පිළිතුරක් සොයාගත නොහැකි විය.");
 
-                if (aiText) {
-                    await sock.sendMessage(from, { text: aiText }, { quoted: msg });
-                }
+                // Alive එකේ format එකටම පිළිතුර සැකසීම
+                let aiResponse = `👋 Hello, ${pushname}
+
+●🧑‍💻 𝐆𝐄𝐌𝐈𝐍𝐈 𝐀𝐈 𝐑𝐄𝐒𝐏𝐎𝐍𝐒𝐄 🧑‍💻●
+
+${result}
+
+*🌞Have A Nice Day🌞*
+
+${sadiya_md_footer}`;
+
+                await reply(aiResponse);
+
             } catch (e) {
-                console.error("AI API Error:", e);
+                console.log(e);
+                reply("API සම්බන්ධතාවයේ දෝෂයක් පවතී.");
             }
         }
     }
