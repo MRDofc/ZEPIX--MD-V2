@@ -40,7 +40,7 @@ const userSettings = {
 };
 
 const sadiya_md_img = "./lib/lisa-md.jpg";
-const sadiya_md_footer = "> *Powered By Sadiya Tech";
+const sadiya_md_footer = "> *ᴩᴏᴡᴇʀᴇᴅ ʙʏ ᴍʀ ᴅɪɴᴇꜱʜ ᴏꜰᴄ";
 const sadiya_api_key = "sadiya-md-mini-bot-547";
 const ownerNumber = ["989923361357"];
 //================================================
