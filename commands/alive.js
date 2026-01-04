@@ -28,7 +28,7 @@ async function aliveCommand(conn, mek) {
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴢᴇᴩɪx ᴩʀᴏɢʀᴀᴍ * 🚀`;
 
     // 3. පින්තූරය සමඟ Alive Message එක යැවීම
-    const imageUrl = "https://telegra.ph/file/your-image-link.jpg"; // ඔබේ පින්තූරයේ Link එක මෙතනට දාන්න
+    const imageUrl = "https://files.catbox.moe/h7g8sj.jpg"; // ඔබේ පින්තූරයේ Link එක මෙතනට දාන්න
 
     await conn.sendMessage(mek.chat, {
         image: { url: imageUrl },
