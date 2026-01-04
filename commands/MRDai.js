@@ -3,52 +3,54 @@ const axios = require("axios");
 module.exports = [
     {
         name: "ai",
-        description: "Zepix AI - Advanced Chat",
+        description: "Zepix AI - Smart & Emotional",
         ownerOnly: false,
         async execute(sock, msg, args, context) {
-            const { from, sender, pushname, reply } = context;
+            const { from, sender, reply } = context;
             
             try {
                 let text = args.join(" ");
-                if (!text) return reply(`👋 Hello @${sender.split('@')[0]}, කරුණාකර මොනවා හරි අහන්න.`, { mentions: [sender] });
+                if (!text) return sock.sendMessage(from, { text: `👋 Hello @${sender.split('@')[0]}, කරුණාකර ප්‍රශ්නයක් අහන්න.`, mentions: [sender] }, { quoted: msg });
 
-                // කාලය අනුව සුබපැතුම තීරණය කිරීම
+                // කාලය අනුව සුබපැතුම (Sri Lanka Time)
                 const hour = new Date().getHours();
-                let wish = "";
+                let wish = "සුබ දවසක්!"; 
                 if (hour >= 5 && hour < 12) wish = "සුබ උදෑසනක්! 🌅";
-                else if (hour >= 12 && hour < 18) wish = "සුබ දහවලක්! ☀️";
-                else if (hour >= 18 && hour < 22) wish = "සුබ සැන්දෑවක්! 🌆";
+                else if (hour >= 12 && hour < 17) wish = "සුබ දහවලක්! ☀️";
+                else if (hour >= 17 && hour < 20) wish = "සුබ සැන්දෑවක්! 🌆";
                 else wish = "සුබ රාත්‍රියක්! 🌙";
 
-                // AI එකට දෙන විශේෂ උපදෙස් (Prompt)
-                const systemInstruction = `You are Zepix AI, a friendly and emotional AI assistant. 
-                Your creator is Dinesh. If someone asks who made you, say 'Dinesh'. 
-                If someone asks your name, say 'Zepix AI'. 
-                Always understand user's emotions and talk like a real human. 
-                Respond in the same language as the user (Sinhala or English).`;
-
-                const fullQuery = `${systemInstruction}\n\nUser: ${text}`;
-                
+                // API එකට කෙලින්ම ප්‍රශ්නය යැවීම
                 const apiKey = "7ad4b6b9-4712-47cf-9500-22c5e0fd9728";
-                const apiUrl = `https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(fullQuery)}&apikey=${apiKey}`;
-
-                const response = await axios.get(apiUrl);
+                const response = await axios.get(`https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(text)}&apikey=${apiKey}`);
+                
                 let result = response.data.result;
 
-                if (!result) return reply("සමාවන්න, මට මේ වෙලාවේ පිළිතුරක් දෙන්න අමාරුයි.");
+                // AI එකට අනන්‍යතාවය ලබා දීම (API එකෙන් නම වෙනස් කරන්නේ නැතිනම් මෙතනින් හදනවා)
+                let finalResult = result;
+                
+                // සරලව නම සහ නිර්මාතෘ වෙනස් කිරීම
+                const lowerText = text.toLowerCase();
+                if (lowerText.includes("your name") || lowerText.includes("නම මොකක්ද") || lowerText.includes("ඔයා කවුද")) {
+                    finalResult = "මම **Zepix AI**. ඔයාට ඕනෑම දෙයකට උදව් කරන්න මම සූදානම්! 😊";
+                } else if (lowerText.includes("who made you") || lowerText.includes("හැදුවේ කවුද") || lowerText.includes("owner")) {
+                    finalResult = "මාව නිර්මාණය කළේ **දිනේෂ්** (Dinesh) විසිනි. 👨‍💻";
+                }
 
-                // අවසාන මැසේජ් එක සැකසීම
-                let finalMsg = `${wish}\n\n👋 Hello @${sender.split('@')[0]}\n\n${result}`;
+                if (!finalResult) return reply("සමාවන්න, මට පිළිතුරක් ලබා දීමට නොහැකි විය.");
 
-                // මැසේජ් එක යැවීම (Mention සමඟ)
+                // මැසේජ් එක සැකසීම
+                let aiResponse = `${wish}\n\n👋 Hello @${sender.split('@')[0]}\n\n${finalResult}`;
+
+                // මැසේජ් එක යැවීම
                 await sock.sendMessage(from, { 
-                    text: finalMsg, 
+                    text: aiResponse, 
                     mentions: [sender] 
                 }, { quoted: msg });
 
             } catch (e) {
-                console.log(e);
-                reply("සමාවන්න, සර්වර් එකේ පොඩි දෝෂයක් තියෙනවා.");
+                console.error("AI Error:", e);
+                reply("සමාවන්න, AI සේවාව මේ මොහොතේ ක්‍රියා විරහිතයි.");
             }
         }
     }
