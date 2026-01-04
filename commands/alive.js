@@ -38,7 +38,7 @@ async function aliveCommand(conn, mek) {
                 title: "ALIVE STATUS",
                 body: "System is running smoothly",
                 mediaType: 1,
-                sourceUrl: "https://github.com/your-repo", // ඔබේ ලින්ක් එකක් මෙතනට දාන්න
+                sourceUrl: "https://github.com/MRDofc/ZEPIX--MD-V2", // ඔබේ ලින්ක් එකක් මෙතනට දාන්න
                 thumbnailUrl: imageUrl,
                 renderLargerThumbnail: true,
                 showAdAttribution: true
