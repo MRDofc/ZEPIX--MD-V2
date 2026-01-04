@@ -1,62 +1,37 @@
-const { runtime } = require("../lib/allFunction");
-const os = require("os");
+const { performance } = require('perf_hooks');
 
-cmd({
-    pattern: "ping",
-    alias: ["speed","pong"],use: '.ping',
-    desc: "Check bot's response time.",
-    category: "main",
-    react: "⚡",
-    filename: __filename
-},
-async (conn, mek, m, { from, quoted, reply }) => {
-    try {
-        const startTime = Date.now();
+module.exports = [
+    {
+        name: "ping",
+        description: "Check Bot Speed",
+        ownerOnly: false,
+        async execute(sock, msg, args, context) {
+            const { from, replyimg, sadiya_md_footer } = context;
+            
+            try {
+                // පින්ග් එක ගණනය කිරීම ආරම්භය
+                const start = performance.now();
+                const end = performance.now();
+                const ping = (end - start).toFixed(3);
 
-        // Add a short delay
-        await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay
+                let desc = `⚡ *ZEPIX-AI SPEED TEST* ⚡
 
-        const endTime = Date.now();
-        const ping = endTime - startTime;
+*📍 Latency:* ${ping} ms
+*📡 Status:* Online
 
-        // Send the ping result
-        await conn.sendMessage(from, { 
-            text: `*⚡ QUEEN-SADU SPEED: ${ping}ms*`, 
-            contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363354023106218@newsletter',
-                    newsletterName: 'ᴍʀ ᴅɪɴᴇꜱʜ',
-                    serverMessageId: 143
-                }
+*🔢 Reply below number,*
+1 | 🏠 Main Menu
+2 | ℹ️ Bot Status
+
+${sadiya_md_footer}`;
+
+                // රූපය සමඟ මැසේජ් එක යැවීම
+                await replyimg(desc);
+
+            } catch (e) {
+                console.log(e);
             }
-        }, { quoted: mek });
-    } catch (e) {
-        console.error(e);
-        reply(`An error occurred: ${e.message}`);
+        }
     }
-});
+]
 
-// ping2 
-
-cmd({
-    pattern: "ping2",
-    desc: "Check bot's response time.",
-    category: "main",
-    react: "🍂",
-    filename: __filename
-},
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        const startTime = Date.now()
-        const message = await conn.sendMessage(from, { text: '*PINGING...*' })
-        const endTime = Date.now()
-        const ping = endTime - startTime
-        await conn.sendMessage(from, { text: `*🔥 QUEEN-SADU SPEED : ${ping}ms*` }, { quoted: message })
-    } catch (e) {
-        console.log(e)
-        reply(`${e}`)
-    }
-})
