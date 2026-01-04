@@ -3,29 +3,38 @@ const axios = require("axios");
 module.exports = [
     {
         name: "ai",
-        description: "Gemini AI Chat Command",
+        description: "Zepix AI Chat Command",
         ownerOnly: false,
         async execute(sock, msg, args, context) {
             const { from, pushname, reply, sadiya_md_footer } = context;
             
             try {
-                // පරිශීලකයා ඇසූ ප්‍රශ්නය ලබා ගැනීම
                 let text = args.join(" ");
-                
-                if (!text) return reply(`👋 Hello ${pushname}, කරුණාකර ප්‍රශ්නයක් ඇතුළත් කරන්න.\n\n*උදාහරණ:* .ai ඔයා කවුද?`);
+                if (!text) return reply(`👋 Hello ${pushname}, කරුණාකර ප්‍රශ්නයක් ඇතුළත් කරන්න.`);
 
-                // API එකට Request එක යැවීම
-                const apiKey = "7ad4b6b9-4712-47cf-9500-22c5e0fd9728";
-                const response = await axios.get(`https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(text)}&apikey=${apiKey}`);
-                
-                const result = response.data.result;
+                let query = text.toLowerCase();
+                let result = "";
+
+                // ඔයා කියපු විදිහට නම සහ හැදූ කෙනා ගැන පරීක්ෂා කිරීම
+                if (query.includes("නම") || query.includes("ඔයා කවුද") || query.includes("who are you") || query.includes("your name")) {
+                    result = "මම **Zepix AI**. ඔයාට උදව් කරන්න පුළුවන් බුද්ධිමත් සහායකයෙක්.";
+                } 
+                else if (query.includes("කවුද හැදුවේ") || query.includes("creator") || query.includes("made you") || query.includes("owner")) {
+                    result = "මාව නිර්මාණය කළේ **දිනේෂ්** (Dinesh) විසිනි.";
+                } 
+                else {
+                    // වෙනත් ප්‍රශ්න සඳහා API එක භාවිතා කිරීම
+                    const apiKey = "7ad4b6b9-4712-47cf-9500-22c5e0fd9728";
+                    const response = await axios.get(`https://sadiya-tech-apis.vercel.app/api/ai/gemini?q=${encodeURIComponent(text)}&apikey=${apiKey}`);
+                    result = response.data.result;
+                }
 
                 if (!result) return reply("සමාවන්න, මට පිළිතුරක් සොයාගත නොහැකි විය.");
 
-                // Alive එකේ format එකටම පිළිතුර සැකසීම
+                // Alive style එකට පිළිතුර සැකසීම
                 let aiResponse = `👋 Hello, ${pushname}
 
-●🧑‍💻 𝐆𝐄𝐌𝐈𝐍𝐈 𝐀𝐈 𝐑𝐄𝐒𝐏𝐎𝐍𝐒𝐄 🧑‍💻●
+●🧑‍💻 **𝐙𝐄𝐏𝐈𝐗 𝐀𝐈 𝐑𝐄𝐒𝐏𝐎𝐍𝐒𝐄** 🧑‍💻●
 
 ${result}
 
