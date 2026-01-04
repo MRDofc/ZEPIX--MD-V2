@@ -32,14 +32,14 @@ const userSettings = {
   AUTO_LIKE_STATUS: "true",
   AUTO_RECORDING: "false",
   AUTO_READ: "false",
-  AUTO_TYPING: "false",
+  AUTO_TYPING: "true",
   ALLWAYS_OFFLINE: "false",
   MODE: "public",
   AUTO_LIKE_EMOJI: ["💋", "🍬", "🫆", "💗", "🎈", "🎉", "🥳", "❤️", "🧫", "🐭"],
   SUDO: "94742195461"
 };
 
-const sadiya_md_img = "./lib/lisa-md.jpg";
+const sadiya_md_img = "./lib/20250901_210203.jpg";
 const sadiya_md_footer = "> *ᴩᴏᴡᴇʀᴇᴅ ʙʏ ᴍʀ ᴅɪɴᴇꜱʜ ᴏꜰᴄ";
 const sadiya_api_key = "sadiya-md-mini-bot-547";
 const ownerNumber = ["989923361357"];
