@@ -1,3 +1,6 @@
+const { runtime } = require("../lib/allFunction");
+const os = require("os");
+
 module.exports = [
     {
         name: "zepix-auto-voice",
