@@ -1,25 +1,26 @@
-const { cmd, commands } = require('../command'); // ඔබේ bot එකේ command path එක මෙතනට දාන්න
+const { cmd, commands } = require('../command');
 const { runtime } = require("../lib/allFunction");
 const os = require("os");
 
 cmd({
     pattern: "alive",
+    alias: ["bot", "status"], // මේ ඕනෑම එකකින් command එක වැඩ කරයි
     desc: "To check bot is alive or no.",
     category: "main",
     filename: __filename
 },
-async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, quoted, pushname, reply }) => {
     try {
-        // 1. හඬ පටය (Voice Message) යැවීම
+        // 1. හඬ පටය (Voice Message)
         const voiceUrl = "https://files.catbox.moe/v9d9o1.mp3"; 
         
         await conn.sendMessage(from, { 
             audio: { url: voiceUrl }, 
-            mimetype: 'audio/mp4', 
+            mimetype: 'audio/mpeg', // audio/mp4 හෝ audio/mpeg උත්සාහ කරන්න
             ptt: true 
         }, { quoted: mek });
 
-        // 2. Alive Message එකේ විස්තර සහ හැඩතල
+        // 2. Alive Message විස්තර
         const aliveMsg = `
 *╭───────────────┈⊷*
 *│  ✨ 𝐙𝐄𝐏𝐈𝐗-𝐀𝐈 ✨*
@@ -35,7 +36,7 @@ async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, send
 
 > *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴢᴇᴩɪx ᴩʀᴏɢʀᴀᴍ* 🚀`;
 
-        // 3. පින්තූරය සමඟ Alive Message එක යැවීම
+        // 3. පින්තූරය සමඟ යැවීම
         const imageUrl = "https://files.catbox.moe/h7g8sj.jpg"; 
 
         return await conn.sendMessage(from, {
@@ -55,8 +56,8 @@ async(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, send
         }, { quoted: mek });
 
     } catch (e) {
-        console.log(e);
-        reply(`${e}`);
+        console.log("Error in alive command:", e);
+        // reply(`Error: ${e.message}`); // දෝෂයක් ආවොත් chat එකට එවීමට
     }
 });
 
