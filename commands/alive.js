@@ -3,7 +3,7 @@ const os = require("os");
 
 async function aliveCommand(conn, mek) {
     // 1. හඬ පටය (Voice Message) යැවීම
-    const voiceUrl = "https://www.myinstants.com/media/sounds/anime-wow.mp3"; // ඔබේ Voice Link එක මෙතනට දාන්න
+    const voiceUrl = "https://files.catbox.moe/v9d9o1.mp3"; // ඔබේ Voice Link එක මෙතනට දාන්න
     
     await conn.sendMessage(mek.chat, { 
         audio: { url: voiceUrl }, 
