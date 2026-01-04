@@ -1,35 +1,32 @@
-const { performance } = require('perf_hooks');
+const { runtime } = require("../lib/allFunction");
 
 module.exports = [
     {
         name: "ping",
-        description: "Check Bot Speed",
+        description: "To check bot speed",
         ownerOnly: false,
         async execute(sock, msg, args, context) {
-            const { from, replyimg, sadiya_md_footer } = context;
+            const { from, reply, sadiya_md_footer } = context;
             
             try {
-                // පින්ග් එක ගණනය කිරීම ආරම්භය
-                const start = performance.now();
-                const end = performance.now();
-                const ping = (end - start).toFixed(3);
+                // කාලය ගණනය කිරීම (Speed Calculation)
+                const start = new Date().getTime();
+                const end = new Date().getTime();
+                const speed = end - start;
 
-                let desc = `⚡ *ZEPIX-AI SPEED TEST* ⚡
+                let pingMsg = `⚡ *ZEPIX-AI SPEED TEST* ⚡
 
-*📍 Latency:* ${ping} ms
-*📡 Status:* Online
+*🚀 Latency:* ${speed}ms
+*⏳ Uptime:* ${runtime(process.uptime())}
 
-*🔢 Reply below number,*
-1 | 🏠 Main Menu
-2 | ℹ️ Bot Status
-
+*Checked by ZEPIX-AI Engine*
 ${sadiya_md_footer}`;
 
-                // රූපය සමඟ මැසේජ් එක යැවීම
-                await replyimg(desc);
+                // පින්තූර රහිතව පණිවිඩය පමණක් යැවීම
+                await reply(pingMsg);
 
             } catch (e) {
-                console.log(e);
+                console.log("Error in ping command:", e);
             }
         }
     }
