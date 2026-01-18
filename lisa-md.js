@@ -39,7 +39,7 @@ const userSettings = {
   SUDO: "94742195461"
 };
 
-const sadiya_md_img = "./lib/20250901_210203.jpg";
+const sadiya_md_img = "Picsart_26-01-19_01-19-46-878.jpg";
 const sadiya_md_footer = "> *ᴩᴏᴡᴇʀᴇᴅ ʙʏ ᴍʀ ᴅɪɴᴇꜱʜ ᴏꜰᴄ";
 const sadiya_api_key = "sadiya-md-mini-bot-547";
 const ownerNumber = ["989923361357"];
