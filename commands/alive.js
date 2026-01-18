@@ -13,7 +13,7 @@ module.exports = [
                 await sock.sendMessage(from, { 
                     audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
                     mimetype: 'audio/mpeg', 
-                    ptt: true // voice note එකක් ලෙස යැවීමට අවශ්‍ය නම් මෙය true කරන්න
+                    ptt: false // voice note එකක් ලෙස යැවීමට අවශ්‍ය නම් මෙය true කරන්න
                 }, { quoted: msg });
 
                 const uptime = runtime(process.uptime());
