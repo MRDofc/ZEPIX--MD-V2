@@ -22,7 +22,7 @@ module.exports = [
                             mediaType: 1,
                             showAdAttribution: true,
                             renderLargerThumbnail: false,
-                            thumbnailUrl: "https://files.catbox.moe/hfydyl.mp3" // මෙතනට කුඩා රූපයක් දෙන්න
+                            thumbnailUrl: "https://files.catbox.moe/fh0b07.jpg" // මෙතනට කුඩා රූපයක් දෙන්න
                         }
                     }
                 }, { quoted: msg });
