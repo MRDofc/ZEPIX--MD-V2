@@ -4,16 +4,16 @@ const os = require("os");
 module.exports = [
     {
         name: "alive",
-        description: "Alive Command with Buttons",
+        description: "Alive Command",
         ownerOnly: false,
         async execute(sock, msg, args, context) {
             const { from, pushname, replyimg, sadiya_md_footer } = context;
             try {
-                // 1. මුලින්ම Audio එක Send කිරීම
+                // 1. මුලින්ම Voice Note එක (Channel View) සහිතව යැවීම
                 await sock.sendMessage(from, { 
                     audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
                     mimetype: 'audio/mpeg', 
-                    ptt: true 
+                    ptt: false // මෙය true කිරීමෙන් Voice Note එකක් ලෙස channel view පෙන්වයි
                 }, { quoted: msg });
 
                 const uptime = runtime(process.uptime());
@@ -45,24 +45,11 @@ module.exports = [
    *ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴢᴇᴘɪx*
 ${sadiya_md_footer}`;
 
-                // 2. Buttons සෑදීම
-                const buttons = [
-                    { buttonId: '.menu', buttonText: { displayText: '𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔' }, type: 1 },
-                    { buttonId: '.ping', buttonText: { displayText: '𝐒𝐏𝐄𝐄𝐃 𝐓𝐄𝐒𝐓' }, type: 1 }
-                ];
-
-                // 3. Image එක සහ Buttons සමඟ Message එක යැවීම
-                // ඔබේ බොට් එකේ config අනුව image එක මෙතනට ඇතුලත් වේ
-                await sock.sendMessage(from, {
-                    image: { url: "https://files.catbox.moe/hfydyl.mp3" }, // මෙතනට වලංගු Image Link එකක් දාන්න (උදා: https://i.ibb.co/....)
-                    caption: desc,
-                    footer: sadiya_md_footer,
-                    buttons: buttons,
-                    headerType: 4
-                }, { quoted: msg });
+                // 2. Audio එකට පසුව රූපය සහ විස්තරය (Image with Caption) යැවීම
+                await replyimg(desc);
 
             } catch (e) {
-                console.log("Error in alive command:", e);
+                console.error("Error in alive command:", e);
             }
         }
     }
