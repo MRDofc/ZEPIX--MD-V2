@@ -9,11 +9,22 @@ module.exports = [
         async execute(sock, msg, args, context) {
             const { from, pushname, replyimg, sadiya_md_footer } = context;
             try {
-                // 1. මුලින්ම Voice Note එක (Channel View) සහිතව යැවීම
+                // 1. Channel View එක සහිතව Audio එක යැවීම
                 await sock.sendMessage(from, { 
                     audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
                     mimetype: 'audio/mpeg', 
-                    ptt: false // මෙය true කිරීමෙන් Voice Note එකක් ලෙස channel view පෙන්වයි
+                    ptt: true,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: "𝐙𝐄𝐏𝐈𝐗-𝐀𝐈 𝐢𝐬 𝐀𝐥𝐢𝐯𝐞",
+                            body: "ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴢᴇᴘɪx",
+                            sourceUrl: `https://whatsapp.com/channel/your-channel-link`, // මෙතනට ඔබේ චැනල් ලින්ක් එක දෙන්න
+                            mediaType: 1,
+                            showAdAttribution: true,
+                            renderLargerThumbnail: false,
+                            thumbnailUrl: "https://files.catbox.moe/hfydyl.mp3" // මෙතනට කුඩා රූපයක් දෙන්න
+                        }
+                    }
                 }, { quoted: msg });
 
                 const uptime = runtime(process.uptime());
@@ -45,7 +56,7 @@ module.exports = [
    *ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴢᴇᴘɪx*
 ${sadiya_md_footer}`;
 
-                // 2. Audio එකට පසුව රූපය සහ විස්තරය (Image with Caption) යැවීම
+                // 2. ඉන්පසුව Image එක සහ Text එක යැවීම
                 await replyimg(desc);
 
             } catch (e) {
