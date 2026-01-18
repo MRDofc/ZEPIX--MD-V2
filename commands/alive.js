@@ -9,6 +9,13 @@ module.exports = [
         async execute(sock, msg, args, context) {
             const { from, pushname, replyimg, sadiya_md_footer } = context;
             try {
+                // පළමුව Audio එක Send කිරීම
+                await sock.sendMessage(from, { 
+                    audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
+                    mimetype: 'audio/mpeg', 
+                    ptt: true // voice note එකක් ලෙස යැවීමට අවශ්‍ය නම් මෙය true කරන්න
+                }, { quoted: msg });
+
                 const uptime = runtime(process.uptime());
                 const usedMem = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
                 const totalMem = Math.round(os.totalmem() / 1024 / 1024);
@@ -38,11 +45,12 @@ module.exports = [
    *ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴢᴇᴘɪx*
 ${sadiya_md_footer}`;
 
+                // Audio එකට පසුව Message එක සහ රූපය යැවීම
                 await replyimg(desc);
+
             } catch (e) {
-                console.log(e);
+                console.error("Error in alive command:", e);
             }
         }
     }
 ]
-
