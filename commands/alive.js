@@ -13,7 +13,7 @@ module.exports = [
                 await sock.sendMessage(from, { 
                     audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
                     mimetype: 'audio/mpeg', 
-                    ptt: true,
+                    ptt: false,
                     contextInfo: {
                         externalAdReply: {
                             title: "𝐙𝐄𝐏𝐈𝐗-𝐀𝐈 𝐢𝐬 𝐀𝐥𝐢𝐯𝐞",
