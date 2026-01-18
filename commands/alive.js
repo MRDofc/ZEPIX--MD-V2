@@ -9,24 +9,25 @@ module.exports = [
         async execute(sock, msg, args, context) {
             const { from, pushname, replyimg, sadiya_md_footer } = context;
             try {
-                // 1. Channel View එක සහිතව Audio එක යැවීම
+                // 1. Voice Note එක යැවීම (මෙය ඕනෑම දුරකථනයක Play වේ)
                 await sock.sendMessage(from, { 
                     audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
-                    mimetype: 'audio/mpeg', 
-                    ptt: false,
+                    mimetype: 'audio/mp4', // WhatsApp සඳහා නිවැරදි mimetype එක
+                    ptt: true, // Voice Note (පටිගත කළ හඬක්) ලෙස යැවීමට
                     contextInfo: {
                         externalAdReply: {
                             title: "𝐙𝐄𝐏𝐈𝐗-𝐀𝐈 𝐢𝐬 𝐀𝐥𝐢𝐯𝐞",
                             body: "ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴢᴇᴘɪx",
-                            sourceUrl: `https://whatsapp.com/channel/your-channel-link`, // මෙතනට ඔබේ චැනල් ලින්ක් එක දෙන්න
+                            sourceUrl: `https://whatsapp.com/channel/your-channel-link`, // ඔබේ චැනල් ලින්ක් එක මෙතනට දමන්න
                             mediaType: 1,
                             showAdAttribution: true,
                             renderLargerThumbnail: false,
-                            thumbnailUrl: "https://files.catbox.moe/fh0b07.jpg" // මෙතනට කුඩා රූපයක් දෙන්න
+                            thumbnailUrl: "https://files.catbox.moe/fh0b07.jpg"
                         }
                     }
                 }, { quoted: msg });
 
+                // Runtime සහ Memory දත්ත ලබා ගැනීම
                 const uptime = runtime(process.uptime());
                 const usedMem = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
                 const totalMem = Math.round(os.totalmem() / 1024 / 1024);
@@ -56,7 +57,7 @@ module.exports = [
    *ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴢᴇᴘɪx*
 ${sadiya_md_footer}`;
 
-                // 2. ඉන්පසුව Image එක සහ Text එක යැවීම
+                // 2. රූපය සහ විස්තරය (Image with Text) යැවීම
                 await replyimg(desc);
 
             } catch (e) {
