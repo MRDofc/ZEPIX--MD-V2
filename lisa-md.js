@@ -104,7 +104,7 @@ async function connectToWA() {
     const { connection, lastDisconnect } = update;
     if (connection === "close") {
       if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-        return console.log("log out huththo")
+        connectToWA();
       }
     } else if (connection === "open") {
       console.log("🔥 Installing... ");
@@ -116,7 +116,7 @@ async function connectToWA() {
   const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson, sms, downloadMediaMessage } = require("./lib/allFunction");
   //==========================================================================
   
-  sock.ev.on("messages.upsert", async (msg) => {
+sock.ev.on('creds.update', saveCreds) sock.ev.on("messages.upsert", async (msg) => {
     if (userSettings.AUTO_READ === "cmd" && msg.key && msg.key.remoteJid !== "status@broadcast") {
       await sock.readMessages([msg.key]); // Mark the message as read but don't send delivery receipts
     }
