@@ -104,19 +104,18 @@ async function connectToWA() {
     const { connection, lastDisconnect } = update;
     if (connection === "close") {
       if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-        connectToWA();
+        return console.log("log out huththo")
       }
     } else if (connection === "open") {
       console.log("🔥 Installing... ");
       console.log("connected to whatsapp ✅");
     }
   });
-
+sock.ev.on('creds.update', saveCreds);
   //============================================================================
   const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson, sms, downloadMediaMessage } = require("./lib/allFunction");
   //==========================================================================
-  
-sock.ev.on('creds.update', saveCreds) sock.ev.on("messages.upsert", async (msg) => {
+   sock.ev.on("messages.upsert", async (msg) => {
     if (userSettings.AUTO_READ === "cmd" && msg.key && msg.key.remoteJid !== "status@broadcast") {
       await sock.readMessages([msg.key]); // Mark the message as read but don't send delivery receipts
     }
