@@ -11,7 +11,7 @@ module.exports = [
             try {
                 // 1. Voice එක Forward කළ එකක් ලෙස යැවීම
                 await sock.sendMessage(from, { 
-                    audio: { url: 'https://files.catbox.moe/hfydyl.mp3' }, 
+                    audio: { url: 'https://files.catbox.moe/08dzp8.mp3' }, 
                     mimetype: 'audio/mp4',
                     ptt: false, 
                     contextInfo: {
