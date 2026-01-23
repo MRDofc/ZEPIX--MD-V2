@@ -13,6 +13,6 @@ function convertToBool(text, fault = 'true') {
 
 module.exports = {
     // process.env හරහා config.env හි ඇති අගයන් ලබා ගනී
-    SESSION_ID: process.env.SESSION_ID || "GNcQlb7R#Hoccgw929TPOmebyjEH42qB5466PjpBlvnJky9DKZ80",
+    SESSION_ID: process.env.SESSION_ID || "STARK-MD~GNcQlb7R#Hoccgw929TPOmebyjEH42qB5466PjpBlvnJky9DKZ80",
     PORT: process.env.PORT || "8000"
 };
